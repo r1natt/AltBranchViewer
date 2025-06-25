@@ -79,7 +79,7 @@ def compare_versions(
         base_branch_packages: BranchBinaryPackages) -> List[PackageName]:
     """Return list, contains packages newer in base than in target branches"""
     
-    compare_list = []
+    return_dict = {}
 
     separeted_target_packages = arch_separation_with_version(target_branch_packages)
     separeted_base_packages = arch_separation_with_version(base_branch_packages)
@@ -89,6 +89,10 @@ def compare_versions(
             if name in separeted_base_packages[arch_name]:
                 t_pack_ver = version
                 b_pack_ver = separeted_base_packages[arch_name][name]
+
+                if arch_name not in return_dict:
+                    return_dict[arch_name] = []
+
                 if b_pack_ver > t_pack_ver:
-                    compare_list.append(name)
-    return compare_list
+                    return_dict[arch_name].append(name)
+    return return_dict
