@@ -15,7 +15,7 @@ def arch_separation(packages: List[PackageInfo]) -> Dict[arch, List[PackageInfo]
 
 def compare_branches(
         target_branch_packages: BranchBinaryPackages, 
-        base_branch_packages: BranchBinaryPackages):
+        base_branch_packages: BranchBinaryPackages) -> Dict[arch, List[str]]:
     """Print package names of target_branch and not in base_branch"""
 
     target_separated = arch_separation(target_branch_packages.packages)
@@ -24,6 +24,7 @@ def compare_branches(
     # названия арзитектур, то я сравниваю пакеты каждой архитектуры отдельно
 
     only_in_target = {arch_name:[] for arch_name in target_separated}
+    only_in_base = {arch_name:[] for arch_name in base_separated}
 
     # Чтобы не проходится по спискам пакетов 2 раза: для target и base по 
     # отдельности, я прохожусь циклом только по target.
@@ -36,7 +37,6 @@ def compare_branches(
                 only_in_target[arch].append(package)
             else:
                 base_separated[arch].remove(package)
-    
-    only_in_base = base_separated
+        only_in_base[arch] = list(base_separated[arch])
 
     return only_in_target, only_in_base
