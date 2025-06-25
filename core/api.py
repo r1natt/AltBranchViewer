@@ -1,15 +1,9 @@
-from enum import Enum
 import json
 import requests
 from requests.exceptions import HTTPError
 import traceback
-from core._types import BranchBinaryPackages
+from core._types import BranchBinaryPackages, BranchName
 from logger import logger
-
-class BranchName(Enum):
-    """Contains branch names"""
-    p11 = "p11"
-    sisyphus = "sisyphus"
 
 API_URL = "https://rdb.altlinux.org/api"
 
