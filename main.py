@@ -92,7 +92,8 @@ def main():
         filename = args.output_filename
 
     save_to_file(filename, comparing_result)
-
+    logger.info(f"result save in {filename}")
+    
 
 if __name__ == "__main__":
     main()

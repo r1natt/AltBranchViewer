@@ -24,7 +24,7 @@ cd AltBranchViewer
 3. Make Pyenv and install requirements
 ```bash
 python -m venv env
-source ./env/source/activate
+source ./env/bin/activate
 pip install -r requirements.txt
 ```
 

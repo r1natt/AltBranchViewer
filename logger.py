@@ -11,7 +11,7 @@ streamh = logging.StreamHandler()
 streamh.setLevel(STREAM_LOG_LEVEL)
 streamh.setFormatter(logger_formatter)
 
-fileh = logging.FileHandler("./logs/general.log")
+fileh = logging.FileHandler("./general.log")
 fileh.setLevel(FILE_LOG_LEVEL)
 fileh.setFormatter(logger_formatter)
 
