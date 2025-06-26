@@ -3,8 +3,7 @@ from pprint import pprint
 from logger import logger
 from core.api import get_branch_binary_packages
 from core.compare import compare_branches, compare_versions
-from core._types import BranchBinaryPackages
-from typing import Tuple
+from core._types import BranchBinaryPackages, validate_branch_name
 import argparse
 import json
 from enum import Enum
@@ -51,30 +50,30 @@ def make_request(branch_name) -> BranchBinaryPackages:
     return repo_packages
 
 def make_comparing(target_branch_name, base_branch_name, action):
-    target_bp = make_request(target_branch_name)
-    base_bp = make_request(base_branch_name)
+    target_branch_packages = make_request(target_branch_name)
+    base_branch_packages = make_request(base_branch_name)
 
     return_dict = {}
 
     if action == Actions.compare_all.value \
         or action == Actions.compare_branches.value:
-        unique_in_target, unique_in_base = compare_branches(target_bp, base_bp)
+        unique_in_target, unique_in_base = compare_branches(target_branch_packages, base_branch_packages)
         for arch_name in unique_in_target.keys():
             return_dict[arch_name] = {
-                "unique_in_p11": unique_in_target[arch_name],
-                "unique_in_sisyphus": unique_in_base[arch_name]
+                "unique_in_target": unique_in_target[arch_name],
+                "unique_in_base": unique_in_base[arch_name]
             }
     if action == Actions.compare_all.value \
         or action == Actions.compare_versions.value:
-        newer_in_sisyphus = compare_versions(target_bp, base_bp)
+        newer_in_base = compare_versions(target_branch_packages, base_branch_packages)
 
-        for arch_name in newer_in_sisyphus.keys():
+        for arch_name in newer_in_base.keys():
             if arch_name not in return_dict:
                 return_dict[arch_name] = {
-                    "newer_in_sisyphus": newer_in_sisyphus[arch_name]
+                    f"newer_in_base": newer_in_base[arch_name]
                 }
             else:
-                return_dict[arch_name]["newer_in_sisyphus"] = newer_in_sisyphus[arch_name]
+                return_dict[arch_name][f"newer_in_bases"] = newer_in_base[arch_name]
     return return_dict
 
 def save_to_file(filename, data):
@@ -84,7 +83,7 @@ def save_to_file(filename, data):
 def main():
     args = argparser()
 
-    target_branch_name, base_branch_name = args.target, args.base
+    target_branch_name, base_branch_name = validate_branch_name(args.target), validate_branch_name(args.base)
 
     comparing_result = make_comparing(target_branch_name, base_branch_name, args.action)
 
