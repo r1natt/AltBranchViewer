@@ -94,5 +94,5 @@ def compare_versions(
                     return_dict[arch_name] = []
 
                 if b_pack_ver > t_pack_ver:
-                    return_dict[arch_name].append(name)
+                    return_dict[arch_name].append(f"{name} {version}")
     return return_dict
