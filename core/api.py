@@ -2,10 +2,11 @@ import json
 import requests
 from core._types import BranchBinaryPackages, BranchName
 from logger import logger
+from typing import Union
 
 API_URL = "https://rdb.altlinux.org/api"
 
-def get_branch_binary_packages(branch_name: BranchName) -> BranchBinaryPackages | None:
+def get_branch_binary_packages(branch_name: BranchName) -> Union[BranchBinaryPackages, None]:
     """Api request to /export/branch_binry_packages/{branch_name}"""
     try:
         endpoint = API_URL + "/export/branch_binary_packages/" + branch_name.value

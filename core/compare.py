@@ -1,5 +1,5 @@
 from core._types import BranchBinaryPackages, PackageInfo, Version
-from typing import List, Dict, TypeAlias, Set, Tuple
+from typing import List, Dict, Set, Tuple
 import traceback
 import re
 from typing import NamedTuple
@@ -12,10 +12,7 @@ VERSION_PATTERN = r"""
 $
 """
 
-Arch: TypeAlias = str
-PackageName: TypeAlias = str
-
-def arch_separation(packages: List[PackageInfo]) -> Dict[Arch, Set[PackageName]]:
+def arch_separation(packages: List[PackageInfo]) -> Dict[str, Set[str]]:
     """Returns dict, key is arch name, value is list of packages that arch"""
     arch_packages = {}
 
@@ -27,7 +24,7 @@ def arch_separation(packages: List[PackageInfo]) -> Dict[Arch, Set[PackageName]]
 
 def compare_branches(
         target_branch_packages: BranchBinaryPackages, 
-        base_branch_packages: BranchBinaryPackages) -> Dict[Arch, List[PackageName]]:
+        base_branch_packages: BranchBinaryPackages) -> Dict[str, List[str]]:
     """Print package names of target_branch and not in base_branch"""
 
     target_arch_separated = arch_separation(target_branch_packages.packages)
@@ -64,8 +61,8 @@ def validate_version(version: str) -> Version:
         release=match.group("release"),
     )
 
-def arch_separation_with_version(branch_packages: BranchBinaryPackages) -> Dict[Arch, Dict[PackageName, Version]]:
-    """Like arch_separation, but instead of set of packages, value is Dict[PackageName, Version]"""
+def arch_separation_with_version(branch_packages: BranchBinaryPackages) -> Dict[str, Dict[str, Version]]:
+    """Like arch_separation, but instead of set of packages, value is Dict[str, Version]"""
     arch_packages = {}
 
     for package in branch_packages.packages:
@@ -76,7 +73,7 @@ def arch_separation_with_version(branch_packages: BranchBinaryPackages) -> Dict[
 
 def compare_versions(
         target_branch_packages: BranchBinaryPackages, 
-        base_branch_packages: BranchBinaryPackages) -> List[PackageName]:
+        base_branch_packages: BranchBinaryPackages) -> List[str]:
     """Return list, contains packages newer in base than in target branches"""
     
     return_dict = {}
