@@ -11,7 +11,9 @@ This project is a cli utility that addresses https://rdb.altlinux.org/api and ca
 
 The script calls the `/export/branch_binary_packages/{branch}` method, where branch is the name of the repository branch.
 
-__Important note: the result of API execution `/export/branch_binary_packages/{branch}`, includes an indication of the architecture for which the package was compiled. As a result of the script, I also output the answer for different architectures.__
+_Important note: the result of API execution `/export/branch_binary_packages/{branch}`, includes an indication of the architecture for which the package was compiled. As a result of the script, I also output the answer for different architectures._ 
+
+**Result of script working will output in `output.json` file by default.**
 
 # :sparkles: Installation
 
