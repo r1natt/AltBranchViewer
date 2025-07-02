@@ -2,6 +2,8 @@
 
 # :clipboard: Description
 
+🐍Python3.9 Support
+
 This project is a cli utility that addresses https://rdb.altlinux.org/api and can compare packages in two branches (`target` and `base`) according to criteria:
 
 * Outputs unique packages that are on one branch, but which are not in the second.
@@ -30,27 +32,41 @@ pip install -r requirements.txt
 
 # :pencil2: Usage
 
-* Compare and versions and branches
+* **Compare and versions and branches**
 
 ```bash
 python main.py compare_all <target_branch_name> <base_branch_name>
 ```
 
-* Compare only branches
+* **Compare only branches**
 
 ```bash
 python main.py compare_branches <target_branch_name> <base_branch_name>
 ```
 
-* Compare only versions
+* **Compare only versions**
 
 ```bash
 python main.py compare_versions <target_branch_name> <base_branch_name>
 ```
 
+* **Output in specify file**
+
+✅Correct option
+
+```bash
+python main.py -f filename.json compare_versions <target_branch_name> <base_branch_name>
+```
+
+❌This is not working
+
+```bash
+python main.py compare_versions <target_branch_name> <base_branch_name> -f filename.json
+```
+
 # :bulb: Examples
 
-* Compare Branches
+* **Compare Branches**
 
 ```bash
 python main.py compare_branches p11 sisyphus
@@ -73,7 +89,7 @@ Output:
 
 ---
 
-* Compare versions
+* **Compare versions**
 
 ```bash
 python main.py compare_versions p11 sisyphus
@@ -94,12 +110,37 @@ Output:
 
 ---
 
-* Compare all
+* **Compare all**
 
 Execute both compare_branches and compare_versions funcs
 
 ```bash
 python main.py compare_all p11 sisyphus
+```
+
+Output:
+
+```json
+{
+    "aarch64": {
+        "newer_in_base": ["3proxy 0.6.1-2", "3proxy-debuginfo 0.6.1-2", "7colors 0.10-1"],
+        "unique_in_target": ["ghc9.2-unix-debuginfo", "x2x", "ghc9.0-directory-debuginfo"],
+        "unique_in_base": ["inlyne", "libyui-qt-devel", "dqt5-webengine-devel-debuginfo"]
+    },
+    "i586": {
+        "newer_in_base": ["3proxy 0.6.1-2", "3proxy-debuginfo 0.6.1-2", "7colors 0.10-1"],
+        "unique_in_target": ["ghc9.2-unix-debuginfo", "x2x", "ghc9.0-directory-debuginfo"],
+        "unique_in_base": ["inlyne", "libyui-qt-devel", "dqt5-webengine-devel-debuginfo"]
+    }
+}
+```
+
+* **Output in specify file**
+
+Execute both compare_branches and compare_versions funcs
+
+```bash
+python main.py -f p11_sisyphus.json compare_all p11 sisyphus
 ```
 
 Output:
