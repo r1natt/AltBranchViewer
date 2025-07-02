@@ -2,7 +2,7 @@
 
 # :clipboard: Description
 
-🐍Python3.9 Support
+🐍Python3.9+ Support
 
 This project is a cli utility that addresses https://rdb.altlinux.org/api and can compare packages in two branches (`target` and `base`) according to criteria:
 
