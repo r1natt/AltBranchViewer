@@ -66,10 +66,10 @@ def compare_versions(
 
     separeted_target_packages = arch_separation_with_version(target_branch_packages)
     separeted_base_packages = arch_separation_with_version(base_branch_packages)
-    
+
     for arch_name, packages_version in separeted_target_packages.items():
         for name, version in packages_version.items():
-            if name in separeted_base_packages[arch_name]:
+            if arch_name in separeted_base_packages.keys() and name in separeted_base_packages[arch_name]:
                 t_pack_ver = version
                 b_pack_ver = separeted_base_packages[arch_name][name]
 

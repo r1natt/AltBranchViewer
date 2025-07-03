@@ -23,12 +23,27 @@ class Version:
 
         self._validation()
 
+    def _ishex(self, s: str) -> bool:
+        pattern = r"^[0-9a-fA-F]+$"
+        return bool(re.match(pattern, s))
+
     def _separate_and_classify(self, token: str) -> list[str]:
-        return re.findall(
+        parts = []
+        separated = re.findall(
             VERSION_PATTERN,
             token,
             re.VERBOSE
         )
+
+        for part in separated:
+            if part.isdigit():
+                parts.append(int(part))
+            elif self._ishex(part) and len(part) >= 6:
+                parts.append(int(part, 16))
+            else:
+                parts.append(part)
+
+        return parts
 
     def _validation(self) -> None:
         self._key = (
