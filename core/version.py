@@ -23,29 +23,14 @@ class Version:
 
         self._validation()
 
-    
-    def is_hex(self, s: str) -> bool:
-        return bool(re.fullmatch(r'[0-9a-f]+', s))
-
-    def _separate_and_classify(self, token):
-        parts = []
-        separation = re.findall(
+    def _separate_and_classify(self, token: str) -> list[str]:
+        return re.findall(
             VERSION_PATTERN,
             token,
             re.VERBOSE
         )
 
-
-        # for part in separation:
-        #     if self.is_hex(part):
-        #         parts.append(int(part, 16))
-        #     elif part.isdigit():
-        #         parts.append(int(part))
-        #     else:
-        #         parts.append(part)
-        return parts
-
-    def _validation(self):
+    def _validation(self) -> None:
         self._key = (
             self.epoch,
             tuple(self._separate_and_classify(self.version)),

@@ -76,14 +76,6 @@ def compare_versions(
                 if arch_name not in return_dict:
                     return_dict[arch_name] = []
 
-                # try:
                 if b_pack_ver > t_pack_ver:
                     return_dict[arch_name].append(f"{name} {b_pack_ver}")
-                # except Exception:
-                #     """
-                #     В случае ошибок при сравнении версии, лучше ничего не делать 
-                #     с этим пакетом, чем возможно ложно утверждать, что чья-то 
-                #     версия больше
-                #     """
-                #     pass
     return return_dict

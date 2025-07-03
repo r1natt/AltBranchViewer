@@ -59,6 +59,11 @@ def test_version_validate(epoch, version, release):
         (0, "0", "alt1.git.7525914"),
         True
     ),
+    (
+        (0, "0", "alt1.git.89f05ca"),    
+        (0, "0", "alt1.git.7525914"),
+        True
+    ),
 ])
 def is_greater_than(v1: str, v2: str, is_greater: bool):
     v1_obj = Version(*v1)
