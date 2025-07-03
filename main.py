@@ -87,12 +87,6 @@ def main():
     target_branch_name, base_branch_name = validate_branch_name(args.target), validate_branch_name(args.base)
 
     comparing_result = make_comparing(target_branch_name, base_branch_name, args.action)
-    
-    glen = 0
-    for arch_name in comparing_result:
-        for tag in comparing_result[arch_name]:
-            glen += len(comparing_result[arch_name][tag])
-    print(glen)
 
     filename = "output.json"
     if args.output_filename is not None:
