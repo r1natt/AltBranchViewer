@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import NamedTuple
 from enum import Enum
 
 class BranchName(Enum):
@@ -22,13 +21,6 @@ def validate_branch_name(branch_name: str) -> BranchName:
         return BranchName(branch_name)
     except ValueError:
         raise ValueError(f"Wrong branch name: {branch_name}. Correct names: {', '.join([bn.value for bn in BranchName])}")
-
-class Version(NamedTuple):
-    version: str
-    release: str
-
-    def __str__(self):
-        return f"{self.version}-{self.release}"
 
 class PackageInfo(BaseModel):
     name: str

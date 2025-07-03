@@ -1,16 +1,9 @@
-from core._types import BranchBinaryPackages, PackageInfo, Version
-from typing import List, Dict, Set, Tuple
+from core._types import BranchBinaryPackages, PackageInfo
+from typing import List, Dict, Set
+from core.version import Version
 import traceback
-import re
-from typing import NamedTuple
+from logger import logger
 
-VERSION_PATTERN = r"""
-^
-(?:v)?
-(?P<version>[\w.\-+]*)
--alt(?P<release>[\w.\-_]+)
-$
-"""
 
 def arch_separation(packages: List[PackageInfo]) -> Dict[str, Set[str]]:
     """Returns dict, key is arch name, value is list of packages that arch"""
@@ -50,17 +43,6 @@ def compare_branches(
 
     return only_in_target, only_in_base
 
-def validate_version(version: str) -> Version:
-    """Input is 'version-release'"""
-    _regex = re.compile(r"^\s*" + VERSION_PATTERN + r"\s*$", re.VERBOSE | re.IGNORECASE)
-    match = _regex.search(version)
-    if match is None:
-        raise ValueError(f"Invalid version format: '{version}'")
-    return Version(
-        version=match.group("version"),
-        release=match.group("release"),
-    )
-
 def arch_separation_with_version(branch_packages: BranchBinaryPackages) -> Dict[str, Dict[str, Version]]:
     """Like arch_separation, but instead of set of packages, value is Dict[str, Version]"""
     arch_packages = {}
@@ -68,7 +50,11 @@ def arch_separation_with_version(branch_packages: BranchBinaryPackages) -> Dict[
     for package in branch_packages.packages:
         if package.arch not in arch_packages.keys():
             arch_packages[package.arch] = {}
-        arch_packages[package.arch][package.name] = validate_version(package.version + "-" + package.release)
+        arch_packages[package.arch][package.name] = Version(
+            package.epoch, 
+            package.version, 
+            package.release
+        )
     return arch_packages
 
 def compare_versions(
@@ -90,6 +76,14 @@ def compare_versions(
                 if arch_name not in return_dict:
                     return_dict[arch_name] = []
 
+                # try:
                 if b_pack_ver > t_pack_ver:
-                    return_dict[arch_name].append(f"{name} {version}")
+                    return_dict[arch_name].append(f"{name} {b_pack_ver}")
+                # except Exception:
+                #     """
+                #     В случае ошибок при сравнении версии, лучше ничего не делать 
+                #     с этим пакетом, чем возможно ложно утверждать, что чья-то 
+                #     версия больше
+                #     """
+                #     pass
     return return_dict

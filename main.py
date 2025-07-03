@@ -4,6 +4,7 @@ from logger import logger
 from core.api import get_branch_binary_packages
 from core.compare import compare_branches, compare_versions
 from core._types import BranchBinaryPackages, validate_branch_name
+from core.version import Version
 import argparse
 import json
 from enum import Enum
@@ -46,7 +47,7 @@ def argparser():
 
 def make_request(branch_name) -> BranchBinaryPackages:
     repo_packages = get_branch_binary_packages(branch_name)
-    logger.info(f"get {branch_name} packages ({repo_packages.length} packages)")
+    logger.info(f"get {branch_name.value} packages ({repo_packages.length} packages)")
     return repo_packages
 
 def make_comparing(target_branch_name, base_branch_name, action):
@@ -86,6 +87,12 @@ def main():
     target_branch_name, base_branch_name = validate_branch_name(args.target), validate_branch_name(args.base)
 
     comparing_result = make_comparing(target_branch_name, base_branch_name, args.action)
+    
+    glen = 0
+    for arch_name in comparing_result:
+        for tag in comparing_result[arch_name]:
+            glen += len(comparing_result[arch_name][tag])
+    print(glen)
 
     filename = "output.json"
     if args.output_filename is not None:

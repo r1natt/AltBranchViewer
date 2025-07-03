@@ -1,5 +1,5 @@
 import pytest
-from core.api import get_branch_binary_packages, validate_branch_name, BranchName
+from core._types import validate_branch_name, BranchName
 
 
 @pytest.mark.parametrize("branch_name,output",[
